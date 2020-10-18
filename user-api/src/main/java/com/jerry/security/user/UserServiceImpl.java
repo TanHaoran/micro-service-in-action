@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo get(Long id) {
-        return null;
+        return userRepository.findById(id).get().buildInfo();
     }
 
     @Override

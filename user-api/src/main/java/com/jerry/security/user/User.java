@@ -1,6 +1,7 @@
 package com.jerry.security.user;
 
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,5 +29,11 @@ public class User {
     private String username;
 
     private String password;
+
+    public UserInfo buildInfo() {
+        UserInfo info = new UserInfo();
+        BeanUtils.copyProperties(this, info);
+        return info;
+    }
 
 }

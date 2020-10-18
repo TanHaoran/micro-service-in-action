@@ -19,28 +19,34 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
+    private JdbcTemplate jdbcTemplate;
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        return user;
+    public UserInfo create(@RequestBody UserInfo user) {
+        return userService.create(user);
     }
 
     @PutMapping("/{id}")
-    public User update(@RequestBody User user) {
-        return user;
+    public UserInfo update(@RequestBody UserInfo user) {
+        return userService.update(user);
     }
 
     @DeleteMapping("/{id}")
-    public void update(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
     }
 
     @GetMapping("{id}")
-    public User get(@PathVariable Long id) {
-        return new User();
+    public UserInfo get(@PathVariable Long id) {
+        return userService.get(id);
+    }
+
+    @GetMapping("/query")
+    public List<UserInfo> query(String name) {
+        return userService.query(name);
     }
 
     @GetMapping("/queryJdbc")
@@ -48,11 +54,6 @@ public class UserController {
         String sql = "SELECT id, name FROM user WHERE name = '" + name + "'";
         List<Map<String, Object>> data = jdbcTemplate.queryForList(sql);
         return data;
-    }
-
-    @GetMapping("/query")
-    public List<User> query(String name) {
-        return userRepository.findByName(name);
     }
 
 }

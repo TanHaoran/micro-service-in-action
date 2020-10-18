@@ -3,10 +3,8 @@ package com.jerry.security.user;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Created with IntelliJ IDEA
@@ -26,8 +24,11 @@ public class User {
 
     private String name;
 
+    @NotBlank(message = "username不能为空")
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @NotBlank(message = "password不能为空")
     private String password;
 
     public UserInfo buildInfo() {

@@ -1,5 +1,6 @@
 package com.jerry.security.user;
 
+import com.lambdaworks.crypto.SCryptUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class UserServiceImpl implements UserService {
     public UserInfo create(UserInfo info) {
         User user = new User();
         BeanUtils.copyProperties(info, user);
+        // 对密码进行加密
+        user.setPassword(SCryptUtil.scrypt(info.getPassword(), 32768, 8, 1));
         userRepository.save(user);
         info.setId(user.getId());
         return info;

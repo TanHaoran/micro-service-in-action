@@ -2,6 +2,7 @@ package com.jerry.security.filter;
 
 import com.jerry.security.user.User;
 import com.jerry.security.user.UserRepository;
+import com.lambdaworks.crypto.SCryptUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,7 +42,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
             User user = userRepository.findByUsername(username);
             // 匹配密码是否正确
-            if (user != null && StringUtils.equals(password, user.getPassword())) {
+            if (user != null && SCryptUtil.check(password, user.getPassword())) {
                 request.setAttribute("user", user);
             }
         }

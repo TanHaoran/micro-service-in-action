@@ -1,6 +1,7 @@
 package com.jerry.security.filter;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,6 +20,7 @@ import java.io.IOException;
  * Description:
  */
 @Component
+@Order(1)
 public class ReteLimitFilter extends OncePerRequestFilter {
 
     /**

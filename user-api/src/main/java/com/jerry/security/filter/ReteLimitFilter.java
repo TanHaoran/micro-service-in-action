@@ -30,6 +30,7 @@ public class ReteLimitFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println(1);
         // 判断是否达到限流器的限制
         if (rateLimiter.tryAcquire()) {
             filterChain.doFilter(request, response);

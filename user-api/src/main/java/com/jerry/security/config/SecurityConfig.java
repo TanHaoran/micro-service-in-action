@@ -1,5 +1,6 @@
 package com.jerry.security.config;
 
+import com.jerry.security.filter.AclInterceptor;
 import com.jerry.security.filter.AuditLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +26,15 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Autowired
     private AuditLogInterceptor auditLogInterceptor;
 
+    @Autowired
+    private AclInterceptor aclInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 这些 Interceptor 会根据下面 addInterceptor() 的顺序来先后执行
         // 在 addInterceptor() 方法后面追加 addPathPatterns() 可以指定针对某些链接生效，如果不指定就全部生效
         registry.addInterceptor(auditLogInterceptor);
+        registry.addInterceptor(aclInterceptor);
     }
 
     @Bean

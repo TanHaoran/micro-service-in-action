@@ -3,6 +3,7 @@ package com.jerry.security.filter;
 import com.jerry.security.log.AuditLog;
 import com.jerry.security.log.AuditLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * Description:
  */
 @Component
+@Order(3)
 public class AuditLogInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
@@ -24,6 +26,7 @@ public class AuditLogInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println(3);
         AuditLog log = new AuditLog();
         log.setMethod(request.getMethod());
         log.setPath(request.getRequestURI());

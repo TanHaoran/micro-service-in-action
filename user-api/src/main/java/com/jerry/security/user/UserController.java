@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,12 @@ public class UserController {
     @GetMapping("/login")
     public void login(@Validated UserInfo user, HttpServletRequest request) {
         UserInfo info = userService.login(user);
-        request.getSession().setAttribute("user", info);
+        // 这里的 false 表示，如果获取不到 session 的时候不会创建一个新的 session，就会返回一个 null，这是为了防止 session 攻击
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        request.getSession(true).setAttribute("user", info);
     }
 
     @PostMapping

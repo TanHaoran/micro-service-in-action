@@ -38,6 +38,11 @@ public class UserController {
         request.getSession(true).setAttribute("user", info);
     }
 
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+    }
+
     @PostMapping
     public UserInfo create(@RequestBody @Validated UserInfo user) {
         return userService.create(user);

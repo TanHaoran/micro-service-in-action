@@ -2,11 +2,14 @@ package com.jerry.security.config;
 
 import com.jerry.security.filter.AclInterceptor;
 import com.jerry.security.filter.AuditLogInterceptor;
+import com.jerry.security.user.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -39,7 +42,16 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public AuditorAware<String> auditorAware() {
-        return () -> Optional.of("auditorAware-jerry");
+        return () -> {
+            ServletRequestAttributes servletRequestAttributes =
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            UserInfo info = (UserInfo) servletRequestAttributes.getRequest().getSession().getAttribute("user");
+            String username = null;
+            if (info != null) {
+                username = info.getUsername();
+            }
+            return Optional.ofNullable(username);
+        };
     }
 
 }

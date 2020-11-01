@@ -51,4 +51,14 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserInfo login(UserInfo info) {
+        UserInfo result = null;
+        User user = userRepository.findByUsername(info.getUsername());
+        if (user != null && SCryptUtil.check(info.getPassword(), user.getPassword())) {
+            result = user.buildInfo();
+        }
+        return result;
+    }
+
 }

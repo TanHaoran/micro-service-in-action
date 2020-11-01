@@ -26,6 +26,12 @@ public class UserController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @GetMapping("/login")
+    public void login(@Validated UserInfo user, HttpServletRequest request) {
+        UserInfo info = userService.login(user);
+        request.getSession().setAttribute("user", info);
+    }
+
     @PostMapping
     public UserInfo create(@RequestBody @Validated UserInfo user) {
         return userService.create(user);
@@ -43,7 +49,7 @@ public class UserController {
 
     @GetMapping("{id}")
     public UserInfo get(@PathVariable Long id, HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
         if (user == null || !user.getId().equals(id)) {
             throw new RuntimeException("身份认证信息异常，获取用户信息失败");
         }

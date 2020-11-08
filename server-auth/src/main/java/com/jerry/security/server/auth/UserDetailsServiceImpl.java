@@ -33,6 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return User.withUsername(username)
                 .password(passwordEncoder.encode("123456"))
+                // 权限，也可以理解成角色
                 .authorities("ROLE_ADMIN")
                 .build();
     }

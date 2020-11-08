@@ -1,11 +1,9 @@
 package com.jerry.security.order;
 
+import com.jerry.security.server.resource.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -23,12 +21,18 @@ public class OrderController {
     private RestTemplate restTemplate = new RestTemplate();
 
     @PostMapping
-    public OrderInfo create(@RequestBody OrderInfo info, @AuthenticationPrincipal String username) {
+    public OrderInfo create(@RequestBody OrderInfo info, @AuthenticationPrincipal(expression = "#this.id") Long userId) {
 //        PriceInfo priceInfo = restTemplate.getForObject("http://localhost:9060/prices/" + info.getProductId(),
 //                PriceInfo.class);
 //        log.info("price is {}", priceInfo.getPrice());
-        log.info("user is {}", username);
+        log.info("userId is {}", userId);
         return info;
+    }
+
+    @GetMapping("/{id}")
+    public OrderInfo get(@PathVariable Long id) {
+        log.info("orderId is {}", id);
+        return new OrderInfo();
     }
 
 }

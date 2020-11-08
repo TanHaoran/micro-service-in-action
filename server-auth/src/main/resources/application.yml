@@ -1,2 +1,10 @@
 server:
   port: 9090
+spring:
+  application:
+    name: auth-server
+  datasource:
+    url: jdbc:mysql://rm-2zee878d65v2tw3idao.mysql.rds.aliyuncs.com/micro_service_in_action?characterEncoding=utf8
+    username: root
+    password: 19881122yl^
+    driver-class-name: com.mysql.cj.jdbc.Driver

@@ -5,7 +5,6 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,7 +85,7 @@ public class AuthorizationFilter extends ZuulFilter {
      * @return
      */
     private boolean hasPermission(TokenInfo tokenInfo, HttpServletRequest request) {
-        return RandomUtils.nextInt() % 2 == 0;
+        return true;
     }
 
     /**

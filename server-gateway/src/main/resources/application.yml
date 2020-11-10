@@ -5,5 +5,32 @@ zuul:
     order:
       url: http://localhost:9080
   sensitive-headers:
+  ratelimit:
+    enabled: true
+    repository: jpa
+    ## 默认的限流规则
+    default-policy-list:
+      ## 3 秒内最多可以进行 2 个请求
+      - limit: 2
+        ## 这些请求总共的执行时间总和不能超过 1 秒
+        quota: 1
+        ## 3 秒内
+        refresh-interval: 10
+        type:
+          - url
+          - httpmethod
+
+spring:
+  application:
+    name: gateway
+  datasource:
+    url: jdbc:mysql://rm-2zee878d65v2tw3idao.mysql.rds.aliyuncs.com/micro_service_in_action?characterEncoding=utf8
+    username: root
+    password: 19881122yl^
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    generate-ddl: true
+    show-sql: true
+
 server:
   port: 9070

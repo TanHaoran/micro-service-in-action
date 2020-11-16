@@ -2,6 +2,7 @@ package com.jerry.security.admin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @SpringBootApplication
 @RestController
+@EnableZuulProxy
 public class AdminApplication {
 
     private RestTemplate restTemplate = new RestTemplate();
@@ -45,7 +47,12 @@ public class AdminApplication {
             TokenInfo.class);
 
         request.getSession().setAttribute("token", responseEntity.getBody());
+    }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request) {
+        // 将 session 失效
+        request.getSession().invalidate();
     }
 
     public static void main(String[] args) {

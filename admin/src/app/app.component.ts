@@ -20,7 +20,19 @@ export class AppComponent {
     };
 
     constructor(private http: HttpClient) {
-
+        // 验证用户是否登录
+        this.http.get('/me').subscribe(data => {
+            if (data) {
+                this.authenticated = true;
+            }
+            if (!this.authenticated) {
+                window.location.href = "http://auth.com:9090/oauth/authorize?" +
+                    'client_id=admin&' +
+                    'redirect_uri=http://admin.com:8080/oauth/callback&' +
+                    'response_type=code&' +
+                    'state=abc';
+            }
+        });
     }
 
     login() {

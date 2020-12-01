@@ -1,5 +1,9 @@
 server:
   port: 9090
+  servlet:
+    session:
+      # 一个月
+      timeout: 259200
 spring:
   application:
     name: auth-server

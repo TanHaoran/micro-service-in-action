@@ -78,7 +78,7 @@ public class AdminApplication {
         ResponseEntity<TokenInfo> responseEntity = restTemplate.exchange(oAuthServiceUrl, HttpMethod.POST, entity,
             TokenInfo.class);
 
-        request.getSession().setAttribute("token", responseEntity.getBody());
+        request.getSession().setAttribute("token", responseEntity.getBody().init());
 
         response.sendRedirect("/");
     }

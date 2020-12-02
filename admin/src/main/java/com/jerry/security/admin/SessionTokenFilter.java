@@ -63,12 +63,21 @@ public class SessionTokenFilter extends ZuulFilter {
                 params.add("refresh_token", token.getRefresh_token());
 
                 HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
-                // 发送请求
-                ResponseEntity<TokenInfo> newToken = restTemplate.exchange(oAuthServiceUrl, HttpMethod.POST, entity,
-                    TokenInfo.class);
 
-                request.getSession().setAttribute("token", newToken.getBody().init());
-                accessToken = newToken.getBody().getAccess_token();
+                try {
+                    // 发送请求
+                    ResponseEntity<TokenInfo> newToken = restTemplate.exchange(oAuthServiceUrl, HttpMethod.POST, entity,
+                        TokenInfo.class);
+
+                    request.getSession().setAttribute("token", newToken.getBody().init());
+                    accessToken = newToken.getBody().getAccess_token();
+                } catch (Exception e) {
+                    // 请求到此截止
+                    requestContext.setSendZuulResponse(false);
+                    requestContext.setResponseStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                    requestContext.setResponseBody("{\"message\":\"refresh fail\"}");
+                    requestContext.getResponse().setContentType("application/json");
+                }
             }
             requestContext.addZuulRequestHeader("Authorization", "bearer " + accessToken);
         }

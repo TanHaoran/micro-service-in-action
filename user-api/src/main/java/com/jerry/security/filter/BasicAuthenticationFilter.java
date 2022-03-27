@@ -36,7 +36,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
         System.out.println(2);
         String authHeader = request.getHeader("Authorization");
         if (StringUtils.isNotBlank(authHeader)) {
-            // 从请求投中解析出来加密的认证字符串
+            // 从请求头中解析出来加密的认证字符串
             String token64 = StringUtils.substringAfter(authHeader, "Basic ");
             String token = new String(Base64Utils.decodeFromString(token64));
             String[] items = StringUtils.splitByWholeSeparatorPreserveAllTokens(token, ":");

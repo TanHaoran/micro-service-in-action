@@ -48,6 +48,12 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * 将 AuthenticationManager 暴露出来成为一个 Bean
+     *
+     * @return
+     * @throws Exception
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
